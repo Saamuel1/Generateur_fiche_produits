@@ -9,22 +9,22 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Charger les produits
-with open("produits_dict.json", "r", encoding="utf-8") as f:
+with open("products_dict.json", "r", encoding="utf-8") as f:
     produits = json.load(f)
 
 # Fonction pour générer uniquement la description
 def generer_description(produit):
     caracs = ", ".join(
-        [f"{cle.capitalize()} : {val}" for cle, val in produit.get("caracteristiques", {}).items() if val]
+        [f"{cle.capitalize()} : {val}" for cle, val in produit.get("characteristics", {}).items() if val]
     )
 
     prompt = f"""
     Rédige une description marketing (3 phrases maximum) pour ce produit.
 
-    Nom : {produit.get('nom')}
-    Marque : {produit.get('marque')}
-    Catégorie : {produit.get('categorie')}
-    Prix : {produit.get('prix')} €
+    Nom : {produit.get('Product Name')}
+    Marque : {produit.get('Brand')}
+    Catégorie : {produit.get('Category')}
+    Prix : {produit.get('Price')} €
     Caractéristiques : {caracs}
     """
 
@@ -35,6 +35,7 @@ def generer_description(produit):
         temperature=0.7
     )
     return response.choices[0].message.content.strip()
+
 
 def generer_prompt_image(description_produit):
     """
