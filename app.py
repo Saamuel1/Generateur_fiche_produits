@@ -12,7 +12,7 @@ from ask_LLM import generer_description, generer_prompt_image, generer_image
 st.title("🛒 Générateur de fiches produits avec image")
 st.write("Choisissez un produit → description marketing + image générée automatiquement")
 
-uploaded_file = st.file_uploader("📂 Importer un fichier produits (.csv ou .json)", type=["csv", "json"])
+uploaded_file = st.file_uploader("Importer un fichier produits (.csv ou .json)", type=["csv", "json"])
 
 if uploaded_file:
     if uploaded_file.name.endswith(".csv"):
@@ -22,7 +22,7 @@ if uploaded_file:
         produits = json.load(uploaded_file)
         df = pd.DataFrame(produits)
 
-    st.success(f"{len(produits)} produits chargés ✅")
+    st.success(f"{len(produits)} produits chargés")
     noms_produits = [p["id_produit"] for p in produits if "id_produit" in p]
     choix = st.selectbox("🔽 Choisissez un produit", noms_produits)
 
@@ -39,12 +39,13 @@ if uploaded_file:
         image_url = generer_image(prompt_img)
 
         # Affichage
-        st.subheader("✨ Résultat")
+        st.subheader("Résultat")
         st.write(f"**Nom :** {produit.get('nom')}")
         st.write(f"**Marque :** {produit.get('marque')}")
         st.write(f"**Catégorie :** {produit.get('categorie')}")
         st.write(f"**Prix :** {produit.get('prix')} €")
         st.write(f"**Description générée :**\n{description}")
         st.write(f"**Prompt image généré :** {prompt_img}")
+
 
         st.image(image_url, caption=produit.get("nom"), use_column_width=True)
