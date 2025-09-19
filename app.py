@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 import json
-import os
-from openai import OpenAI
-from dotenv import load_dotenv
 from ask_LLM import generer_description, generer_prompt_image, generer_image
 
 # -----------------------
@@ -23,11 +20,11 @@ if uploaded_file:
         df = pd.DataFrame(produits)
 
     st.success(f"{len(produits)} produits chargés")
-    noms_produits = [p["id_produit"] for p in produits if "id_produit" in p]
+    noms_produits = [p["Product ID"] for p in produits if "Product ID" in p]
     choix = st.selectbox("🔽 Choisissez un produit", noms_produits)
 
     if st.button("🚀 Générer la fiche + image"):
-        produit = next(p for p in produits if p.get("id_produit") == choix)
+        produit = next(p for p in produits if p.get("Product ID") == choix)
 
         # Étape 1 : Description produit
         description = generer_description(produit)
@@ -40,12 +37,11 @@ if uploaded_file:
 
         # Affichage
         st.subheader("Résultat")
-        st.write(f"**Nom :** {produit.get('nom')}")
-        st.write(f"**Marque :** {produit.get('marque')}")
-        st.write(f"**Catégorie :** {produit.get('categorie')}")
-        st.write(f"**Prix :** {produit.get('prix')} €")
+        st.write(f"**Nom :** {produit.get('Product Name')}")
+        st.write(f"**Marque :** {produit.get('Brand')}")
+        st.write(f"**Catégorie :** {produit.get('Category')}")
+        st.write(f"**Prix :** {produit.get('Price')} €")
         st.write(f"**Description générée :**\n{description}")
-        st.write(f"**Prompt image généré :** {prompt_img}")
 
 
         st.image(image_url, caption=produit.get("nom"), use_column_width=True)
