@@ -8,7 +8,7 @@ df = pd.read_csv("fashion_products.csv")
 # Ici on enlève "User ID" (pas utile pour la fiche produit)
 df = df.drop(columns=["User ID"], errors="ignore")
 
-# 3. Renommer les colonnes (optionnel mais plus propre)
+# 3. Renommer les colonnes
 df = df.rename(columns={
     "Product ID": "id_produit",
     "Product Name": "nom",
@@ -74,3 +74,4 @@ with open("produits_dict.json", "w", encoding="utf-8") as f:
     json.dump(produits, f, ensure_ascii=False, indent=4)
 
 print(f"✅ {len(produits)} produits transformés et sauvegardés dans produits_dict.json")
+
